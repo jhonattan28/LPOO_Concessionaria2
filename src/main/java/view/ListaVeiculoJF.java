@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Veiculo;
 import model.dao.VeiculoDAO;
-import model.dao.VeiculoDAO_bkp;
 
 /**
  *
@@ -191,7 +190,7 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
             try {
                 dao.persist(telaEdicao.getVeiculo());
             } catch (Exception ex) {
-                System.out.println("Erro ao editar veículo\n Erro: "+ex);
+                System.err.println("Erro ao editar veículo\n Erro: "+ex);
             }
             
             loadTabelaVeiculos();

@@ -6,11 +6,13 @@ package model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javax.persistence.MappedSuperclass;
 
 /**
  *
  * @author vanessalagomachado
  */
+@MappedSuperclass
 public class Pessoa {
     private String nome;
     private String CPF;

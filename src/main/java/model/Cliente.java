@@ -4,12 +4,38 @@
  */
 package model;
 
+import java.io.Serializable;
+import javax.annotation.processing.Generated;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author vanessalagomachado
  */
-public class Cliente extends Pessoa{
+@Entity
+@Table(name = "clientes")
+public class Cliente extends Pessoa implements Serializable{
 
+    @Id
+    @Column(name = "cli_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
+   
     
     
 }

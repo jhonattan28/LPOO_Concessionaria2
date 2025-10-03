@@ -4,31 +4,26 @@
  */
 package model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import model.Cliente;
+import model.Veiculo;
 
 /**
  *
  * @author vanessalagomachado
  */
-public class ClienteDAO {
-    List<Cliente> lista;
-
-    public ClienteDAO() {
-        lista  = new ArrayList<>();
-    }
-    
-    public void addCliente(Cliente cliente){
-        lista.add(cliente);
-    }
-    
-    public void removerCliente(Cliente cliente){
-        lista.remove(cliente);
-    }
-    
+public class ClienteDAO extends PersistenciaJPA{
     public List<Cliente> listaClientes(){
-        return lista;
+    EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Cliente> query
+                    = em.createQuery("SELECT v FROM Cliente v", Cliente.class);
+            return query.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-    
 }

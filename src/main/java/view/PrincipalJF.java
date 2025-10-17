@@ -31,7 +31,8 @@ public class PrincipalJF extends javax.swing.JFrame {
         miVendedor = new javax.swing.JMenuItem();
         miCliente = new javax.swing.JMenuItem();
         miVeiculo = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        miVenda = new javax.swing.JMenu();
+        miTelaVenda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,8 +64,22 @@ public class PrincipalJF extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        miVenda.setText("Venda");
+        miVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miVendaActionPerformed(evt);
+            }
+        });
+
+        miTelaVenda.setText("Realizar Venda");
+        miTelaVenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miTelaVendaActionPerformed(evt);
+            }
+        });
+        miVenda.add(miTelaVenda);
+
+        jMenuBar1.add(miVenda);
 
         setJMenuBar(jMenuBar1);
 
@@ -96,6 +111,15 @@ public class PrincipalJF extends javax.swing.JFrame {
         ListaVeiculoJF telaVeiculo = new ListaVeiculoJF();
         telaVeiculo.setVisible(true);
     }//GEN-LAST:event_miVeiculoActionPerformed
+
+    private void miVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miVendaActionPerformed
+        
+    }//GEN-LAST:event_miVendaActionPerformed
+
+    private void miTelaVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miTelaVendaActionPerformed
+        ListaVendas telaVendas = new ListaVendas();
+        telaVendas.setVisible(true);
+    }//GEN-LAST:event_miTelaVendaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,10 +158,11 @@ public class PrincipalJF extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem miCliente;
+    private javax.swing.JMenuItem miTelaVenda;
     private javax.swing.JMenuItem miVeiculo;
+    private javax.swing.JMenu miVenda;
     private javax.swing.JMenuItem miVendedor;
     // End of variables declaration//GEN-END:variables
 }

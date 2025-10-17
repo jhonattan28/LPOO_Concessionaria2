@@ -4,24 +4,21 @@
  */
 package model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import model.Cliente;
-import model.Vendedor;
+import model.Venda;
 
 /**
  *
  * @author vanessalagomachado
  */
-public class VendedorDAO extends PersistenciaJPA{
-    
-    public List<Vendedor> listaVendedores(){
+public class VendaDAO extends PersistenciaJPA{
+    public List<Venda> listaVendas(){
     EntityManager em = getEntityManager();
         try {
-            TypedQuery<Vendedor> query
-                    = em.createQuery("SELECT v FROM Vendedor v", Vendedor.class);
+            TypedQuery<Venda> query
+                    = em.createQuery("SELECT v FROM Venda v", Venda.class);
             return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();

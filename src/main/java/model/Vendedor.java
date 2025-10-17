@@ -4,13 +4,29 @@
  */
 package model;
 
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.*;
+
 /**
  *
  * @author vanessalagomachado
  */
+@Entity
+@Table(name = "vendedores")
 public class Vendedor extends Pessoa{
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Id
+    @Column(name = "vend_id")
+    private int id;
+    
+    @Column(name = "vend_salario", columnDefinition = "numeric(12,2)")
     private double salario;
+    
+    @Column(name = "vend_comissao", columnDefinition = "numeric(5,2)")
     private double comissao;
+    
+
 
     public double getSalario() {
         return salario;
@@ -38,4 +54,12 @@ public class Vendedor extends Pessoa{
         return aux;
     }
     
+    
+        /*// 1 vendedor -> várias vendas
+    @OneToMany(mappedBy = "vendedor")
+    private List<Venda> vendas;
+    
+    public List<Venda> getVendas() { return vendas; }
+    public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
+*/
 }

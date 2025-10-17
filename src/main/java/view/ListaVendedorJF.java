@@ -4,6 +4,8 @@
  */
 package view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Vendedor;
@@ -140,8 +142,12 @@ public class ListaVendedorJF extends javax.swing.JFrame {
         telaCadastro.setVisible(true);
         
         Vendedor novoVendedor = telaCadastro.getVendedor();
-        //JOptionPane.showMessageDialog(rootPane, novoVendedor);
-        dao.addVendedor(novoVendedor);
+        try {
+            //JOptionPane.showMessageDialog(rootPane, novoVendedor);
+            dao.persist(novoVendedor);
+        } catch (Exception ex) {
+            System.err.println("Erro ao cadastrar Vendedor: "+ex);
+        }
         loadTabelaVendedores();
     }//GEN-LAST:event_btnNovoActionPerformed
 
@@ -159,7 +165,11 @@ public class ListaVendedorJF extends javax.swing.JFrame {
             Vendedor obj_vendedor = (Vendedor)tblVendedores.getModel().getValueAt(tblVendedores.getSelectedRow(), 0); 
             int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover "+obj_vendedor+"?");
             if(op_remover == JOptionPane.YES_OPTION){
-                dao.removerVendedor(obj_vendedor);
+                try {
+                    dao.remover(obj_vendedor);
+                } catch (Exception ex) {
+                    System.err.println("Erro ao remover vendedor: "+ex);
+                }
                 JOptionPane.showMessageDialog(rootPane, "Vendedor removido com sucesso... ");
                 loadTabelaVendedores();
             }
@@ -176,6 +186,13 @@ public class ListaVendedorJF extends javax.swing.JFrame {
             telaEdicao.setVendedor(obj_vendedor);
             
             telaEdicao.setVisible(true);
+            
+            try {
+                dao.persist(telaEdicao.getVendedor());
+            } catch (Exception ex) {
+                System.out.println("Erro ao editar Vendedor: "+ex);
+            }
+            
             loadTabelaVendedores();
             
             

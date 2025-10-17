@@ -4,20 +4,37 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import javax.persistence.*;
 
 /**
  *
  * @author vanessalagomachado
  */
-public class Venda {
+@Entity
+@Table(name = "vendas")
+public class Venda implements Serializable{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "venda_id")
+    private int id;
+    
+    
     private LocalDateTime dataVenda;
     private double valorVenda;
     private FormaContrato formaContrato;
     private FormaPgto formaPgto;
+    
+    @ManyToOne
     private Cliente cliente;
+
     private Vendedor vendedor;
+
     private Veiculo veiculo;
+    
+    
 
     public LocalDateTime getDataVenda() {
         return dataVenda;
@@ -78,6 +95,14 @@ public class Venda {
     @Override
     public String toString() {
         return "Venda: { veiculo"+veiculo.getPlaca()+", cliente: "+cliente.getNome()+", vendedor: "+vendedor.getNome()+"}";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     

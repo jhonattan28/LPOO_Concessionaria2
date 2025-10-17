@@ -5,13 +5,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.processing.Generated;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -25,6 +21,10 @@ public class Cliente extends Pessoa implements Serializable{
     @Column(name = "cli_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    
+    @OneToMany(mappedBy = "cliente")
+    private List<Venda> vendas;
+    
 
     public Long getId() {
         return id;
@@ -34,8 +34,31 @@ public class Cliente extends Pessoa implements Serializable{
         this.id = id;
     }
 
-
-   
     
+    
+    
+    
+    
+    
+    
+    
+    
+
+    /*/ 1 cliente -> várias vendas
+    @OneToMany(mappedBy = "cliente")
+    private List<Venda> vendas;
+    
+    public List<Venda> getVendas() { return vendas; }
+    public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
+   
+    */
+
+    public List<Venda> getVendas() {
+        return vendas;
+    }
+
+    public void setVendas(List<Venda> vendas) {
+        this.vendas = vendas;
+    }
     
 }

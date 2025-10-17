@@ -21,17 +21,30 @@ public class Venda implements Serializable{
     @Column(name = "venda_id")
     private int id;
     
-    
+    @Column(name = "venda_data_hora", nullable = false)
     private LocalDateTime dataVenda;
+    
+    @Column(name = "venda_valor", columnDefinition = "numeric(12,2)")
     private double valorVenda;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "venda_forma_contrato")
     private FormaContrato formaContrato;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "venda_forma_pgto")
     private FormaPgto formaPgto;
     
     @ManyToOne
+    @JoinColumn(name = "venda_cliente")
     private Cliente cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "venda_vendedor")
     private Vendedor vendedor;
 
+    @ManyToOne
+    @JoinColumn(name = "venda_veiculo")
     private Veiculo veiculo;
     
     

@@ -5,6 +5,8 @@
 package view;
 
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Venda;
@@ -157,8 +159,22 @@ public class ListaVendas extends javax.swing.JFrame {
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         // 1. Abrir a aplicação CadastroVendaJD
+        CadastroVendaJD telaVenda = new CadastroVendaJD(this, rootPaneCheckingEnabled);
+        telaVenda.setVisible(true);
+        
         // 2. recuperar o objeto Venda
+        Venda novoObj = telaVenda.getVenda();
+        
         // 3. Se o objeto não for null persistir no BD
+        if(novoObj != null){
+            try {
+                dao.persist(novoObj);
+                loadVendas();
+            } catch (Exception ex) {
+                System.err.println("Erro ao salvar nova Venda: "+novoObj+"\n Erro: "+ex);
+            }
+        
+        }
     }//GEN-LAST:event_btnNovoActionPerformed
 
     /**

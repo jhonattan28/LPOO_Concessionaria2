@@ -4,6 +4,7 @@
  */
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "vendedores")
-public class Vendedor extends Pessoa{
+public class Vendedor extends Pessoa implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     @Column(name = "vend_id")
@@ -55,11 +56,11 @@ public class Vendedor extends Pessoa{
     }
     
     
-        /*// 1 vendedor -> várias vendas
+    // 1 vendedor -> várias vendas
     @OneToMany(mappedBy = "vendedor")
     private List<Venda> vendas;
     
     public List<Venda> getVendas() { return vendas; }
     public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
-*/
+
 }

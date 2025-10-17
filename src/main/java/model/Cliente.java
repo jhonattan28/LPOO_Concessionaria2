@@ -22,8 +22,7 @@ public class Cliente extends Pessoa implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     
-    @OneToMany(mappedBy = "cliente")
-    private List<Venda> vendas;
+    
     
 
     public Long getId() {
@@ -35,30 +34,15 @@ public class Cliente extends Pessoa implements Serializable{
     }
 
     
-    
-    
-    
-    
-    
-    
-    
-    
-
-    /*/ 1 cliente -> várias vendas
+    // 1 cliente -> várias vendas
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas;
     
     public List<Venda> getVendas() { return vendas; }
     public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
+    
+    
+    
    
-    */
-
-    public List<Venda> getVendas() {
-        return vendas;
-    }
-
-    public void setVendas(List<Venda> vendas) {
-        this.vendas = vendas;
-    }
     
 }

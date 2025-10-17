@@ -55,23 +55,33 @@ public class CadastroVendaJD extends javax.swing.JDialog {
     }
     
     public void loadFormaPgto(){
-        
+        for(FormaPgto obj: FormaPgto.values()){
+            cmbFormaPgto.addItem(obj);
+        }
     }
     
     public void loadFormaContrato(){
-        
+         for(FormaContrato obj: FormaContrato.values()){
+            cmbFormaContrato.addItem(obj);
+        }
     }
     
     public void loadClientes(){
-        
+        for(Cliente obj: daoCliente.listaClientes()){
+            cmbCliente.addItem(obj);
+        }
     }
 
     public void loadVendedores(){
-        
+        for(Vendedor obj: daoVendedor.listaVendedores()){
+            cmbVendedor.addItem(obj);
+        }
     }
 
     public void loadVeiculos(){
-        
+        for(Veiculo obj: daoVeiculo.listaVeiculos()){
+            cmbVeiculo.addItem(obj);
+        }
     }
 
     /**
@@ -229,11 +239,26 @@ public class CadastroVendaJD extends javax.swing.JDialog {
         
         try {
             // 1 - instanciar o objeto do tipo Venda
-            // 2 - setar os valores dos campos txt... para o objeto  venda
-            // 3 - fechar a aplicação
+            venda = new Venda();
             
+            // 2 - setar os valores dos campos txt... para o objeto  venda
+            
+            double valor = Double.parseDouble(txtValor.getText()
+                    .replace(",", "."));
+            LocalDateTime dataVenda = LocalDateTime.parse(txtDataVenda.getText(), formatter);
+
+            venda.setValorVenda(valor);
+            venda.setDataVenda(dataVenda);
+            venda.setFormaContrato((FormaContrato) cmbFormaContrato.getSelectedItem());
+            venda.setFormaPgto((FormaPgto) cmbFormaPgto.getSelectedItem());
+            venda.setCliente((Cliente) cmbCliente.getSelectedItem());
+            venda.setVendedor((Vendedor) cmbVendedor.getSelectedItem());
+            venda.setVeiculo((Veiculo) cmbVeiculo.getSelectedItem());
 
             
+            // 3 - fechar a aplicação
+            this.dispose();
+
 
         } catch (NumberFormatException e) {
             venda = null;

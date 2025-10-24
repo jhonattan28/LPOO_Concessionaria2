@@ -124,6 +124,12 @@ public class CadastroVendaJD extends javax.swing.JDialog {
 
         lblFormaPagamento.setText("Forma de Pagamento:");
 
+        cmbVeiculo.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cmbVeiculoItemStateChanged(evt);
+            }
+        });
+
         lblCliente.setText("Cliente:");
 
         lblVeiculo.setText("Veículo:");
@@ -272,6 +278,13 @@ public class CadastroVendaJD extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void cmbVeiculoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbVeiculoItemStateChanged
+        Veiculo objSel = (Veiculo)cmbVeiculo.getSelectedItem();
+        if(objSel != null){
+            txtValor.setText(""+objSel.getValor());
+        }
+    }//GEN-LAST:event_cmbVeiculoItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -342,5 +355,13 @@ public class CadastroVendaJD extends javax.swing.JDialog {
 
     public void setVenda(Venda venda) {
         this.venda = venda;
+        txtDataVenda.setText(venda.getDataVenda().format(formatter));
+        txtValor.setText(""+venda.getValorVenda());
+        cmbCliente.setSelectedItem(venda.getCliente());
+        cmbVeiculo.setSelectedItem(venda.getVeiculo());
+        cmbVendedor.setSelectedItem(venda.getVendedor());
+        
+        cmbFormaContrato.setSelectedItem(venda.getFormaContrato());
+        cmbFormaPgto.setSelectedItem(venda.getFormaPgto());
     }
 }

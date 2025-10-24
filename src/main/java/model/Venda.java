@@ -4,8 +4,10 @@
  */
 package model;
 
+import model.dao.Util;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.*;
 
 /**
@@ -15,7 +17,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "vendas")
 public class Venda implements Serializable{
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "venda_id")
@@ -107,7 +108,7 @@ public class Venda implements Serializable{
 
     @Override
     public String toString() {
-        return "Venda: { veiculo"+veiculo.getPlaca()+", cliente: "+cliente.getNome()+", vendedor: "+vendedor.getNome()+"}";
+        return Util.formatarDataHora(dataVenda);
     }
 
     public int getId() {
@@ -116,6 +117,18 @@ public class Venda implements Serializable{
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String exibirDados() {
+        
+        String aux = "Dados da Venda:\n";
+        aux += "Data|Hora:"+Util.formatarDataHora(dataVenda)+"\n";
+        aux += "Veiculo"+getVeiculo().getPlaca()+"\n";
+        aux += "Cliente: "+getCliente().getNome()+"\n";
+        aux += "Vendedor: "+getVendedor().getNome()+"\n";
+         aux += "Forma de Contrato: "+formaContrato+"\n";
+          aux += "Forma de Pagamento: "+formaPgto+"\n";
+          return aux;
     }
     
     

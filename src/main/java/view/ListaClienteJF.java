@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.util.logging.Level;
@@ -9,14 +5,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
-import model.Vendedor;
 import model.dao.ClienteDAO;
-import model.dao.VendedorDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaClienteJF extends javax.swing.JFrame {
 
     ClienteDAO dao;
@@ -41,7 +31,7 @@ public class ListaClienteJF extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblVendedores = new javax.swing.JTable();
+        tblClientes = new javax.swing.JTable();
         btnNovo = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
@@ -49,7 +39,7 @@ public class ListaClienteJF extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        tblVendedores.setModel(new javax.swing.table.DefaultTableModel(
+        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -75,7 +65,7 @@ public class ListaClienteJF extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblVendedores);
+        jScrollPane1.setViewportView(tblClientes);
 
         btnNovo.setText("Novo");
         btnNovo.addActionListener(new java.awt.event.ActionListener() {
@@ -156,9 +146,9 @@ public class ListaClienteJF extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-        if (tblVendedores.getSelectedRow() != -1) {
-            Cliente obj = (Cliente) tblVendedores.getModel().
-                    getValueAt(tblVendedores.getSelectedRow(), 0);
+        if (tblClientes.getSelectedRow() != -1) {
+            Cliente obj = (Cliente) tblClientes.getModel().
+                    getValueAt(tblClientes.getSelectedRow(), 0);
             JOptionPane.showMessageDialog(rootPane, obj.exibirDados());
         } else {
             JOptionPane.showMessageDialog(rootPane, "Selecione um cliente");
@@ -166,9 +156,9 @@ public class ListaClienteJF extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        if (tblVendedores.getSelectedRow() != -1) {
-            Cliente obj = (Cliente) tblVendedores.getModel().
-                    getValueAt(tblVendedores.getSelectedRow(), 0);
+        if (tblClientes.getSelectedRow() != -1) {
+            Cliente obj = (Cliente) tblClientes.getModel().
+                    getValueAt(tblClientes.getSelectedRow(), 0);
             int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover " + obj + "?");
             if (op_remover == JOptionPane.YES_OPTION) {
                 try {
@@ -186,9 +176,9 @@ public class ListaClienteJF extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if (tblVendedores.getSelectedRow() != -1) {
-            Cliente obj = (Cliente) tblVendedores.getModel().
-                    getValueAt(tblVendedores.getSelectedRow(), 0);
+        if (tblClientes.getSelectedRow() != -1) {
+            Cliente obj = (Cliente) tblClientes.getModel().
+                    getValueAt(tblClientes.getSelectedRow(), 0);
 
             CadastroClienteJD telaEdicao = new CadastroClienteJD(this, rootPaneCheckingEnabled);
             telaEdicao.setCliente(obj);
@@ -252,7 +242,7 @@ public class ListaClienteJF extends javax.swing.JFrame {
     public void loadTabelaClientes() {
 
         // Obtém o modelo da tabela - vincular o que definimos no Desing
-        DefaultTableModel modelo = (DefaultTableModel) tblVendedores.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
         //limpar as linhas e popular 
         modelo.setNumRows(0);
 
@@ -272,6 +262,6 @@ public class ListaClienteJF extends javax.swing.JFrame {
     private javax.swing.JButton btnNovo;
     private javax.swing.JButton btnRemover;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblVendedores;
+    private javax.swing.JTable tblClientes;
     // End of variables declaration//GEN-END:variables
 }

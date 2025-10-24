@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.MappedSuperclass;
 
-/**
- *
- * @author vanessalagomachado
- */
 @MappedSuperclass
 public class Pessoa {
     private String nome;
@@ -87,7 +79,6 @@ public class Pessoa {
     }
     
     public String exibirDados(){
-        // Define o mesmo formatador usado para a criação da string
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String aux = "Pessoa cadastrada: \n";
         aux += "Nome: " + nome+ "\n";

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -18,10 +14,6 @@ import model.Modelo;
 import model.Veiculo;
 import model.Vendedor;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroVeiculoJD extends javax.swing.JDialog {
     private Veiculo veiculo;
    
@@ -71,7 +63,7 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Cadastro de Vendedor");
+        jLabel1.setText("Cadastro de Veículo");
 
         lblNome.setText("Placa");
 
@@ -194,9 +186,7 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
-
-        
+      
         try{
             veiculo.setPlaca(txtPlaca.getText());
             veiculo.setCor(txtCor.getText());

@@ -1,22 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Venda;
 import model.dao.VendaDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaVendas extends javax.swing.JFrame {
 
     VendaDAO dao;
+
     /**
      * Creates new form ListaVendas
      */
@@ -24,20 +21,31 @@ public class ListaVendas extends javax.swing.JFrame {
         initComponents();
         dao = new VendaDAO();
         loadVendas();
+        esconderColuna();
     }
-    
-    public void loadVendas(){
-       DefaultTableModel modelo = (DefaultTableModel) tblVendas.getModel();
-       modelo.setNumRows(0);
-       for(Venda obj: dao.listaVendas()){
-           Object[] linha = {
-            obj.getDataVenda().format(DateTimeFormatter.ISO_DATE),
-            obj.getVeiculo(),
-            obj.getCliente()
-           };
-           modelo.addRow(linha);
-       }
-        
+
+    public void loadVendas() {
+        DefaultTableModel modelo = (DefaultTableModel) tblVendas.getModel();
+        modelo.setNumRows(0);
+        for (Venda obj : dao.listaVendas()) {
+            Object[] linha = {
+                obj.getDataVenda().format(DateTimeFormatter.ISO_DATE),
+                obj.getVeiculo(),
+                obj.getCliente(),
+                obj.getId()
+            };
+            modelo.addRow(linha);
+        }
+
+    }
+
+    private void esconderColuna() {
+        if (tblVendas.getColumnModel().getColumnCount() > 3) {
+            tblVendas.getColumnModel().getColumn(3).setMinWidth(0);
+            tblVendas.getColumnModel().getColumn(3).setMaxWidth(0);
+            tblVendas.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tblVendas.getColumnModel().getColumn(3).setResizable(false);
+        }
     }
 
     /**
@@ -75,20 +83,20 @@ public class ListaVendas extends javax.swing.JFrame {
 
         tblVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Data Venda", "Veículo", "Cliente"
+                "Data Venda", "Veículo", "Cliente", "ID"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -109,10 +117,25 @@ public class ListaVendas extends javax.swing.JFrame {
         });
 
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         btnInfo.setText("Mais Informações");
+        btnInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInfoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -156,10 +179,83 @@ public class ListaVendas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-        // 1. Abrir a aplicação CadastroVendaJD
-        // 2. recuperar o objeto Venda
-        // 3. Se o objeto não for null persistir no BD
+
+        CadastroVendaJD telaVenda = new CadastroVendaJD(this, rootPaneCheckingEnabled);
+        Venda novaVenda = new Venda();
+        novaVenda.setDataVenda(LocalDateTime.now());
+
+        telaVenda.setVenda(novaVenda);
+        telaVenda.setVisible(true);
+
+        Venda novoObj = telaVenda.getVenda();
+
+        if (novoObj != null) {
+            try {
+                dao.persist(novoObj);
+                loadVendas();
+            } catch (Exception ex) {
+                System.err.println("Erro ao salvar nova venda: " + novoObj + "\n Erro: " + ex);
+            }
+        }
     }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+
+        if (tblVendas.getSelectedRow() != -1) {
+            Venda obj_venda = (Venda) dao.buscarPorID((Integer) tblVendas.getModel().getValueAt(tblVendas.getSelectedRow(), 3)).get();
+            CadastroVendaJD telaEdicao = new CadastroVendaJD(this, rootPaneCheckingEnabled);
+            telaEdicao.setVenda(obj_venda);
+
+            telaEdicao.setVisible(true);
+
+            try {
+                dao.persist(telaEdicao.getVenda());
+            } catch (Exception ex) {
+                System.err.println("Erro ao editar veículo\n Erro: " + ex);
+            }
+
+            loadVendas();
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione uma venda");
+        }
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
+        if (tblVendas.getSelectedRow() != -1) {
+            int id = (int) tblVendas.getModel().getValueAt(tblVendas.getSelectedRow(), 3);
+
+            try {
+                Venda obj = (Venda) dao.find(Venda.class, id);
+                JOptionPane.showMessageDialog(rootPane, obj.exibirDados());
+            } catch (Exception ex) {
+                System.err.println("Erro ao selecionar a venda: " + ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Selecione uma venda");
+        }
+    }//GEN-LAST:event_btnInfoActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        if (tblVendas.getSelectedRow() != -1) {
+            int id = (int) tblVendas.getModel().getValueAt(tblVendas.getSelectedRow(), 3);
+            {
+                try {
+                    Venda obj = (Venda) dao.find(Venda.class, id);
+                    int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover " + obj + "?");
+                    if (op_remover == JOptionPane.YES_OPTION) {
+                        dao.remover(obj);
+                    }
+                    JOptionPane.showMessageDialog(rootPane, "Venda removida com sucesso... ");
+                    loadVendas();
+                } catch (Exception ex) {
+                    System.err.println("Erro ao selecionar a venda ou remover: " + ex);
+                }
+
+            }
+        }
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 
-/**
- *
- * @author vanessalagomachado
- */
 @Entity
 @Table(name = "veiculos")
 public class Veiculo implements Serializable {
@@ -118,12 +110,39 @@ public class Veiculo implements Serializable {
     }
     
     
-        /*/ 1 veiculo -> várias vendas
+        // 1 veiculo -> várias vendas
     @OneToMany(mappedBy = "veiculo")
     private List<Venda> vendas;
     
     public List<Venda> getVendas() { return vendas; }
     public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
-*/
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+@Override
+public int hashCode() {
+    return this.id; 
+}
+
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    
+    final Veiculo other = (Veiculo) obj;
+    
+    return this.id == other.id;
+}
     
 }

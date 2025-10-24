@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.util.logging.Level;
@@ -11,10 +7,6 @@ import javax.swing.table.DefaultTableModel;
 import model.Vendedor;
 import model.dao.VendedorDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaVendedorJF extends javax.swing.JFrame {
 
     VendedorDAO dao;

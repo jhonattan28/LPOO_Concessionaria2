@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -10,17 +6,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import model.Cliente;
-import model.Vendedor;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroClienteJD extends javax.swing.JDialog {
     private Cliente cliente;
-    
-    
-    
+
     // Define o mesmo formatador usado para a criação da string
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     

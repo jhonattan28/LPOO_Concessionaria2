@@ -39,9 +39,7 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.1.Final</version>
         </dependency>
-        <!--
-        o avax.xml.bind pode ser necessario caso esteja utilizando openjdk
-        -->
+
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>

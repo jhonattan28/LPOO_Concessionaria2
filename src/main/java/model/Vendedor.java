@@ -1,20 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.*;
 
-/**
- *
- * @author vanessalagomachado
- */
 @Entity
 @Table(name = "vendedores")
-public class Vendedor extends Pessoa{
+public class Vendedor extends Pessoa implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     @Column(name = "vend_id")
@@ -55,11 +48,30 @@ public class Vendedor extends Pessoa{
     }
     
     
-        /*// 1 vendedor -> várias vendas
     @OneToMany(mappedBy = "vendedor")
     private List<Venda> vendas;
     
     public List<Venda> getVendas() { return vendas; }
     public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
-*/
+
+@Override
+public int hashCode() {
+    return this.id; 
+}
+
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) {
+        return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+        return false;
+    }
+    
+    final Vendedor other = (Vendedor) obj;
+    
+    return this.id == other.id;
+}
+    
+    
 }

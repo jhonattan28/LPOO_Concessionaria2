@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.util.logging.Level;
@@ -11,10 +7,6 @@ import javax.swing.table.DefaultTableModel;
 import model.Veiculo;
 import model.dao.VeiculoDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaVeiculoJF extends javax.swing.JFrame {
 
     VeiculoDAO dao;
@@ -162,20 +154,20 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
         if(tblVeiculos.getSelectedRow() != -1){
-            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String)tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
-            int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover "+obj_vendedor+"?");
+            Veiculo obj = (Veiculo) dao.buscarPorPlaca((String)tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
+            int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover "+obj+"?");
             if(op_remover == JOptionPane.YES_OPTION){
                 try {
-                    dao.remover(obj_vendedor);
+                    dao.remover(obj);
+                    JOptionPane.showMessageDialog(rootPane, "Veiculo removido com sucesso... ");
+                    loadTabelaVeiculos();
                 } catch (Exception ex) {
-                    System.out.println("Erro ao remover veículo "+obj_vendedor+"\n Erro: "+ex);
+                    System.out.println("Erro ao remover veículo "+obj+"\n Erro: "+ex);
                 }
-                JOptionPane.showMessageDialog(rootPane, "Veiculo removido com sucesso... ");
-                loadTabelaVeiculos();
+
             }
-            
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Selecione um vendedor");
+            JOptionPane.showMessageDialog(rootPane, "Selecione um veiculo");
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
 

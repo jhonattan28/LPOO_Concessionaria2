@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -11,10 +7,6 @@ import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import model.Vendedor;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroVendedorJD extends javax.swing.JDialog {
     private Vendedor vendedor;
     

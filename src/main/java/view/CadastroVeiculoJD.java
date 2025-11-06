@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -17,14 +13,11 @@ import model.Marca;
 import model.Modelo;
 import model.Veiculo;
 import model.Vendedor;
+import model.dao.Util;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroVeiculoJD extends javax.swing.JDialog {
+
     private Veiculo veiculo;
-   
 
     /**
      * Creates new form CadastroVendedorJD
@@ -34,7 +27,7 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
         initComponents();
         loadMarcas();
         loadModelos();
-        
+
         veiculo = new Veiculo();
     }
 
@@ -194,26 +187,52 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
 
-        
-        try{
-            veiculo.setPlaca(txtPlaca.getText());
-            veiculo.setCor(txtCor.getText());
-            veiculo.setMarca((Marca)cmbMarca.getSelectedItem());
-            veiculo.setModelo((Modelo)cmbModelo.getSelectedItem());
-            veiculo.setAnoFabricacao(Integer.parseInt(txtAnoFabricacao.getText().trim()));
-            veiculo.setAnoModelo(Integer.parseInt(txtAnoModelo.getText().trim()));
-            veiculo.setValor(Double.parseDouble(txtValor.getText().trim().replace(",", ".")));
+        if (veiculo != null) {
+            veiculo = new Veiculo();
+        }
+
+        try {
+            String placa = txtPlaca.getText().trim().replaceAll("-", "").toUpperCase();
+            String REGEX_PLACA = "[A-Z]{3}[0-9][A-Z0-9][0-9]{2}";
             
+            if (!placa.matches(REGEX_PLACA)) {
+                JOptionPane.showMessageDialog(rootPane, "Placa inválida! Padrão LLLNXNN (L = Letra, N = Numero, X = Letra ou Numero");
+                return;
+            } else {
+                veiculo.setPlaca(placa);
+            }
+
+            veiculo.setCor(txtCor.getText());
+            veiculo.setMarca((Marca) cmbMarca.getSelectedItem());
+            veiculo.setModelo((Modelo) cmbModelo.getSelectedItem());
+
+            int anoFabricacao = Integer.parseInt(txtAnoFabricacao.getText().trim());
+            if (Util.validaAno(anoFabricacao)) {
+                veiculo.setAnoFabricacao(Integer.parseInt(txtAnoFabricacao.getText().trim()));
+            } else {
+                return;
+            }
+
+            int anoModelo = Integer.parseInt(txtAnoModelo.getText().trim());
+            if (Util.validaAno(anoModelo)) {
+                veiculo.setAnoModelo(Integer.parseInt(txtAnoModelo.getText().trim()));
+            } else {
+                return;
+            }
+            
+            veiculo.setValor(Double.parseDouble(txtValor.getText().trim().replace(",", ".")));
+
             this.dispose();
-        } catch (NumberFormatException e1){
-            JOptionPane.showMessageDialog(rootPane, "Valor Inválido\n"+e1);
-        } catch (Exception e3){
-            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro inesperado: \n"+e3);
-        } 
-        
-        
+        } catch (NumberFormatException e1) {
+            veiculo = null;
+            JOptionPane.showMessageDialog(rootPane, "Valor Inválido\n" + e1);
+        } catch (Exception e3) {
+            veiculo = null;
+            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro inesperado: \n" + e3);
+        }
+
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
@@ -261,8 +280,6 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
         });
     }
 
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -288,7 +305,7 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
 
     private void loadMarcas() {
         cmbMarca.removeAllItems();
-        for(Marca obj: Marca.values()){
+        for (Marca obj : Marca.values()) {
             cmbMarca.addItem(obj);
         }
     }
@@ -300,10 +317,8 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
 //        }
         List<Modelo> modelos = Arrays.asList(Modelo.values());
         modelos.forEach(obj -> cmbModelo.addItem(obj));
-        
+
     }
-    
-    
 
     public Veiculo getVeiculo() {
         return veiculo;
@@ -311,15 +326,14 @@ public class CadastroVeiculoJD extends javax.swing.JDialog {
 
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
-        
+
         txtPlaca.setText(veiculo.getPlaca());
         txtCor.setText(veiculo.getCor());
-        txtAnoModelo.setText(""+veiculo.getAnoModelo());
-        txtAnoFabricacao.setText(""+veiculo.getAnoFabricacao());
+        txtAnoModelo.setText("" + veiculo.getAnoModelo());
+        txtAnoFabricacao.setText("" + veiculo.getAnoFabricacao());
         cmbMarca.setSelectedItem(veiculo.getMarca());
         cmbModelo.setSelectedItem(veiculo.getModelo());
-        txtValor.setText(""+veiculo.getValor());
+        txtValor.setText("" + veiculo.getValor());
     }
-    
-    
+
 }

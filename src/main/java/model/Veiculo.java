@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
-/**
- *
- * @author vanessalagomachado
- */
 @Entity
 @Table(name = "veiculos")
 public class Veiculo implements Serializable {
@@ -42,6 +35,13 @@ public class Veiculo implements Serializable {
     @Column(name = "vei_modelo")
     private Modelo modelo;
     
+    @Column (name = "vei_disponivel")
+    private Boolean disponivel;
+    
+    public Veiculo(){
+        disponivel = true;
+        vendas = new ArrayList<>();
+    }
 
     public String getPlaca() {
         return placa;
@@ -113,6 +113,7 @@ public class Veiculo implements Serializable {
         aux += "Modelo: "+modelo+"\n";
         aux += "Marca: "+marca+"\n";
         aux += "Valor: R$"+valor+"\n";
+        aux += disponivel ? "[DISPONIVEL]" : "[NÃO DISPONIVEL]";
 
         return aux;
     }
@@ -124,6 +125,14 @@ public class Veiculo implements Serializable {
     
     public List<Venda> getVendas() { return vendas; }
     public void setVendas(List<Venda> vendas) { this.vendas = vendas; }
+
+    public Boolean getDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(Boolean disponivel) {
+        this.disponivel = disponivel;
+    }
 
     
 }

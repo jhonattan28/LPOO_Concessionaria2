@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -11,19 +7,14 @@ import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import model.Cliente;
 import model.Vendedor;
+import model.dao.Util;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroClienteJD extends javax.swing.JDialog {
+
     private Cliente cliente;
-    
-    
-    
+
     // Define o mesmo formatador usado para a criação da string
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * Creates new form CadastroVendedorJD
@@ -31,8 +22,7 @@ public class CadastroClienteJD extends javax.swing.JDialog {
     public CadastroClienteJD(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        
+
         cliente = new Cliente();
     }
 
@@ -150,25 +140,34 @@ public class CadastroClienteJD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
 
-        
-        try{
+        if (cliente == null) {
+            cliente = new Cliente();
+        }
+
+        try {
+            String cpf = txtCPF.getText().trim().replaceAll("[^0-9]", "");
+            
+            if(!Util.ValidadorCPF.CPFValido(cpf)){
+                JOptionPane.showMessageDialog(rootPane, "CPF inválido!");
+                return;
+            }
             this.cliente.setNome(txtNome.getText());
-            this.cliente.setCPF(txtCPF.getText());
+            this.cliente.setCPF(cpf);
             // sintaxe para conversão: LocalDate.parse(String com data, máscara)
             this.cliente.setDataNascimento(LocalDate.parse(txtDtNascimento.getText(), formatter));
             this.cliente.setTelefone(txtTelefone.getText());
-            
-            
+
             this.dispose();
-        } catch (DateTimeParseException e1){
-            JOptionPane.showMessageDialog(rootPane, "Data inválida!! Informe data no formato dd-mm-yyyy\n"+e1);
-        }  catch (Exception e3){
-            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro inesperado: \n"+e3);
-        } 
-        
-        
+        } catch (DateTimeParseException e1) {
+            JOptionPane.showMessageDialog(rootPane, "Data inválida!! Informe data no formato dd-mm-yyyy\n" + e1);
+            cliente = null;
+        } catch (Exception e3) {
+            JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro inesperado: \n" + e3);
+            cliente = null;
+        }
+
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
@@ -216,9 +215,6 @@ public class CadastroClienteJD extends javax.swing.JDialog {
         });
     }
 
-    
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -242,7 +238,7 @@ public class CadastroClienteJD extends javax.swing.JDialog {
         this.cliente = cliente;
         txtNome.setText(cliente.getNome());
         txtCPF.setText(cliente.getCPF());
-       
+
         txtTelefone.setText(cliente.getTelefone());
         txtDtNascimento.setText(cliente.getDataNascimento().format(formatter));
     }

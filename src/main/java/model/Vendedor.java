@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.*;
 
-/**
- *
- * @author vanessalagomachado
- */
 @Entity
 @Table(name = "vendedores")
 public class Vendedor extends Pessoa implements Serializable{
@@ -45,6 +38,10 @@ public class Vendedor extends Pessoa implements Serializable{
         this.comissao = comissao;
     }
 
+    public Vendedor(){
+        vendas = new ArrayList<>();
+        
+    }
     
     
     public String exibirDados(){

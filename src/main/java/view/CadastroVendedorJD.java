@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.text.SimpleDateFormat;
@@ -10,11 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import model.Vendedor;
+import model.dao.Util.ValidadorCPF;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroVendedorJD extends javax.swing.JDialog {
     private Vendedor vendedor;
     
@@ -30,7 +23,6 @@ public class CadastroVendedorJD extends javax.swing.JDialog {
         initComponents();
         
         
-        vendedor = new Vendedor();
     }
 
     /**
@@ -168,23 +160,42 @@ public class CadastroVendedorJD extends javax.swing.JDialog {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         
-
+        if(vendedor == null)
+                vendedor = new Vendedor();
         
         try{
+            String cpf = txtCPF.getText().trim().replaceAll("[^0-9]", "");
+            
+            if(!ValidadorCPF.CPFValido(cpf)){
+                JOptionPane.showMessageDialog(rootPane, "CPF inválido!");
+                return;
+            }
+            
             this.vendedor.setNome(txtNome.getText());
-            this.vendedor.setCPF(txtCPF.getText());
+            this.vendedor.setCPF(cpf);
             // sintaxe para conversão: LocalDate.parse(String com data, máscara)
             this.vendedor.setDataNascimento(LocalDate.parse(txtDtNascimento.getText(), formatter));
             this.vendedor.setTelefone(txtTelefone.getText());
-            this.vendedor.setSalario(Double.parseDouble(txtSalario.getText()));
-            this.vendedor.setComissao(Double.parseDouble(txtComissao.getText()));
+            double salario = Double.parseDouble(txtSalario.getText());
+            this.vendedor.setSalario(salario);
+            
+            double comissao = Double.parseDouble(txtComissao.getText());
+            if(comissao < 0 || comissao >= 100){
+                JOptionPane.showMessageDialog(rootPane, "Valor de comissão inválido! Informe somente valores entre [0-100]%");
+                return;
+            }else{
+            this.vendedor.setComissao(comissao);
+            }
             
             this.dispose();
         } catch (DateTimeParseException e1){
+             vendedor = null;
             JOptionPane.showMessageDialog(rootPane, "Data inválida!! Informe data no formato dd-mm-yyyy\n"+e1);
         } catch (NumberFormatException e2){
+            vendedor = null;
             JOptionPane.showMessageDialog(rootPane, "Valores inválidos!! Em salário e comissão informe somente valores numéricos\n"+e2);
         } catch (Exception e3){
+            vendedor = null;
             JOptionPane.showMessageDialog(rootPane, "Ocorreu um erro inesperado: \n"+e3);
         } 
         

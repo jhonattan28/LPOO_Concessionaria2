@@ -1,16 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package teste;
 
 import model.Veiculo;
 import model.dao.PersistenciaJPA;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class TestePersisteVeiculo {
     public static void main(String[] args) {
         PersistenciaJPA jpa = new PersistenciaJPA();

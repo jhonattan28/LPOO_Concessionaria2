@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.time.format.DateTimeFormatter;
@@ -12,15 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.Veiculo;
 import model.Venda;
+import model.dao.VeiculoDAO;
 import model.dao.VendaDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaVendas extends javax.swing.JFrame {
 
     VendaDAO dao;
+    VeiculoDAO veidao;
 
     /**
      * Creates new form ListaVendas
@@ -179,7 +173,7 @@ public class ListaVendas extends javax.swing.JFrame {
         // 3. Se o objeto não for null persistir no BD
         if (novoObj != null) {
             try {
-                dao.persist(novoObj);
+                dao.persist(novoObj);                
                 loadVendas();
             } catch (Exception ex) {
                 System.err.println("Erro ao salvar nova Venda: " + novoObj + "\n Erro: " + ex);

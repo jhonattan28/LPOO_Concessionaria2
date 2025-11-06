@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import java.util.logging.Level;
@@ -11,21 +7,20 @@ import javax.swing.table.DefaultTableModel;
 import model.Veiculo;
 import model.dao.VeiculoDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class ListaVeiculoJF extends javax.swing.JFrame {
 
     VeiculoDAO dao;
+
     /**
      * Creates new form ListaVeiculoJF
      */
     public ListaVeiculoJF() {
         initComponents();
-        
+
         dao = new VeiculoDAO();
         loadTabelaVeiculos();
+        
+        verificaDisponibilidade();
     }
 
     /**
@@ -48,20 +43,20 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
 
         tblVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Placa", "Marca", "Modelo", "Ano Modelo"
+                "Placa", "Marca", "Modelo", "Ano Modelo", "Disponivel"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -140,20 +135,24 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
         CadastroVeiculoJD telaCadastro = new CadastroVeiculoJD(this, rootPaneCheckingEnabled);
         telaCadastro.setVisible(true);
-        
+
         Veiculo novoVeiculo = telaCadastro.getVeiculo();
-        try {
-            //JOptionPane.showMessageDialog(rootPane, novoVeiculo);
-            dao.persist(novoVeiculo);
-        } catch (Exception ex) {
-            System.out.println("Erro ao castrar o veículo "+novoVeiculo.toString()+" \n Erro: "+ex);
+        if (novoVeiculo != null) {
+            try {
+                //JOptionPane.showMessageDialog(rootPane, novoVeiculo);
+                novoVeiculo.setDisponivel(true);
+                dao.persist(novoVeiculo);
+                loadTabelaVeiculos();
+            } catch (Exception ex) {
+                System.out.println("Erro ao castrar o veículo " + novoVeiculo.toString() + " \n Erro: " + ex);
+            }
         }
-        loadTabelaVeiculos();
+
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInfoActionPerformed
-        if(tblVeiculos.getSelectedRow() != -1){
-            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String)tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
+        if (tblVeiculos.getSelectedRow() != -1) {
+            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String) tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
             JOptionPane.showMessageDialog(rootPane, obj_vendedor.exibirDados());
         } else {
             JOptionPane.showMessageDialog(rootPane, "Selecione um vendedor");
@@ -161,49 +160,50 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
     }//GEN-LAST:event_btnInfoActionPerformed
 
     private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
-        if(tblVeiculos.getSelectedRow() != -1){
-            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String)tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
-            int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover "+obj_vendedor+"?");
-            if(op_remover == JOptionPane.YES_OPTION){
+        if (tblVeiculos.getSelectedRow() != -1) {
+            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String) tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
+            int op_remover = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja remover " + obj_vendedor + "?");
+            if (op_remover == JOptionPane.YES_OPTION) {
                 try {
                     dao.remover(obj_vendedor);
                 } catch (Exception ex) {
-                    System.out.println("Erro ao remover veículo "+obj_vendedor+"\n Erro: "+ex);
+                    System.out.println("Erro ao remover veículo " + obj_vendedor + "\n Erro: " + ex);
                 }
                 JOptionPane.showMessageDialog(rootPane, "Veiculo removido com sucesso... ");
                 loadTabelaVeiculos();
             }
-            
+
         } else {
             JOptionPane.showMessageDialog(rootPane, "Selecione um vendedor");
         }
     }//GEN-LAST:event_btnRemoverActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        if(tblVeiculos.getSelectedRow() != -1){
-            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String)tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
+        if (tblVeiculos.getSelectedRow() != -1) {
+            Veiculo obj_vendedor = (Veiculo) dao.buscarPorPlaca((String) tblVeiculos.getModel().getValueAt(tblVeiculos.getSelectedRow(), 0)).get();
             CadastroVeiculoJD telaEdicao = new CadastroVeiculoJD(this, rootPaneCheckingEnabled);
             telaEdicao.setVeiculo(obj_vendedor);
-            
+
             telaEdicao.setVisible(true);
-            
-            try {
-                dao.persist(telaEdicao.getVeiculo());
-            } catch (Exception ex) {
-                System.err.println("Erro ao editar veículo\n Erro: "+ex);
+
+            Veiculo obj_retornado = telaEdicao.getVeiculo();
+            if (obj_retornado != null) {
+                try {
+                    dao.persist(obj_retornado);
+                    loadTabelaVeiculos();
+                } catch (Exception ex) {
+                    System.err.println("Erro ao editar veículo\n Erro: " + ex);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Selecione um vendedor");
             }
-            
-            loadTabelaVeiculos();
-            
-            
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Selecione um vendedor");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -238,23 +238,49 @@ public class ListaVeiculoJF extends javax.swing.JFrame {
             }
         });
     }
-    
-    public void loadTabelaVeiculos(){
-        
+
+    public void loadTabelaVeiculos() {
+
         // Obtém o modelo da tabela - vincular o que definimos no Desing
         DefaultTableModel modelo = (DefaultTableModel) tblVeiculos.getModel();
         //limpar as linhas e popular 
         modelo.setNumRows(0);
-        
-        for(Veiculo obj: dao.listaVeiculos()){
+
+        for (Veiculo obj : dao.listaVeiculos()) {
             Object[] linha = {
-                obj.getPlaca(), 
-                    obj.getMarca(), 
-                    obj.getModelo(), 
-                    obj.getAnoModelo()
-                            };
+                obj.getPlaca(),
+                obj.getMarca(),
+                obj.getModelo(),
+                obj.getAnoModelo(),
+                obj.getDisponivel().booleanValue()
+            };
             modelo.addRow(linha);
         }
+
+    }
+    
+    public void verificaDisponibilidade(){
+        tblVeiculos.getModel().addTableModelListener(e -> {
+           int row = e.getFirstRow();
+           int col = e.getColumn();
+           
+           if(col == 4){
+               String placa = (String) tblVeiculos.getValueAt(row, 0);
+               dao.buscarPorPlaca(placa).ifPresent(v -> {
+               int op_edt = JOptionPane.showConfirmDialog(rootPane, "Tem certeza que deseja alterar a disponibilidade ?");
+               if (op_edt == JOptionPane.YES_OPTION){
+                   Boolean disponivel = (Boolean)tblVeiculos.getValueAt(row, 4);
+                   
+                   v.setDisponivel(disponivel);
+                   try {
+                       dao.persist(v);
+                   } catch (Exception ex) {
+                       System.out.println("Erro ao alterar a disponibilidade do veículo: "+v+"\nErro: "+ex);
+                   }
+               }
+               });
+           }
+        });
         
     }
 

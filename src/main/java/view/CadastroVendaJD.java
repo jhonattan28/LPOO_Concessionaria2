@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package view;
 
 import java.time.LocalDate;
@@ -20,66 +16,63 @@ import model.dao.VeiculoDAO;
 import model.dao.VendaDAO;
 import model.dao.VendedorDAO;
 
-/**
- *
- * @author vanessalagomachado
- */
 public class CadastroVendaJD extends javax.swing.JDialog {
 
     ClienteDAO daoCliente;
     VendedorDAO daoVendedor;
     VeiculoDAO daoVeiculo;
-    
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-    
+
     private Venda venda;
+
     /**
      * Creates new form CadastroVendaJD
      */
     public CadastroVendaJD(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         daoCliente = new ClienteDAO();
         daoVeiculo = new VeiculoDAO();
         daoVendedor = new VendedorDAO();
-        
+
         loadFormaPgto();
         loadFormaContrato();
-        
+
         loadClientes();
         loadVendedores();
         loadVeiculos();
-        
+
         txtDataVenda.setText(LocalDateTime.now().format(formatter)); // Preenche data atual
     }
-    
-    public void loadFormaPgto(){
-        for(FormaPgto obj: FormaPgto.values()){
+
+    public void loadFormaPgto() {
+        for (FormaPgto obj : FormaPgto.values()) {
             cmbFormaPgto.addItem(obj);
         }
     }
-    
-    public void loadFormaContrato(){
-         for(FormaContrato obj: FormaContrato.values()){
+
+    public void loadFormaContrato() {
+        for (FormaContrato obj : FormaContrato.values()) {
             cmbFormaContrato.addItem(obj);
         }
     }
-    
-    public void loadClientes(){
-        for(Cliente obj: daoCliente.listaClientes()){
+
+    public void loadClientes() {
+        for (Cliente obj : daoCliente.listaClientes()) {
             cmbCliente.addItem(obj);
         }
     }
 
-    public void loadVendedores(){
-        for(Vendedor obj: daoVendedor.listaVendedores()){
+    public void loadVendedores() {
+        for (Vendedor obj : daoVendedor.listaVendedores()) {
             cmbVendedor.addItem(obj);
         }
     }
 
-    public void loadVeiculos(){
-        for(Veiculo obj: daoVeiculo.listaVeiculos()){
+    public void loadVeiculos() {
+        for (Veiculo obj : daoVeiculo.listaVeiculos()) {
             cmbVeiculo.addItem(obj);
         }
     }
@@ -241,17 +234,19 @@ public class CadastroVendaJD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        
-        
+
         try {
             // 1 - instanciar o objeto do tipo Venda
-            venda = new Venda();
-            
+            if (venda == null) {
+                venda = new Venda();
+            }
+
             // 2 - setar os valores dos campos txt... para o objeto  venda
-            
             double valor = Double.parseDouble(txtValor.getText()
                     .replace(",", "."));
             LocalDateTime dataVenda = LocalDateTime.parse(txtDataVenda.getText(), formatter);
+
+            Veiculo veiculoSelecionado = (Veiculo) cmbVeiculo.getSelectedItem();
 
             venda.setValorVenda(valor);
             venda.setDataVenda(dataVenda);
@@ -259,12 +254,15 @@ public class CadastroVendaJD extends javax.swing.JDialog {
             venda.setFormaPgto((FormaPgto) cmbFormaPgto.getSelectedItem());
             venda.setCliente((Cliente) cmbCliente.getSelectedItem());
             venda.setVendedor((Vendedor) cmbVendedor.getSelectedItem());
-            venda.setVeiculo((Veiculo) cmbVeiculo.getSelectedItem());
+            if (veiculoSelecionado != null && !veiculoSelecionado.getDisponivel()) {
+                JOptionPane.showMessageDialog(rootPane, "Esse veículo não está disponível para venda!");
+                return;
+            } else {
+                venda.setVeiculo(veiculoSelecionado);
+            }
 
-            
             // 3 - fechar a aplicação
             this.dispose();
-
 
         } catch (NumberFormatException e) {
             venda = null;
@@ -279,9 +277,9 @@ public class CadastroVendaJD extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void cmbVeiculoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbVeiculoItemStateChanged
-        Veiculo objSel = (Veiculo)cmbVeiculo.getSelectedItem();
-        if(objSel != null){
-            txtValor.setText(""+objSel.getValor());
+        Veiculo objSel = (Veiculo) cmbVeiculo.getSelectedItem();
+        if (objSel != null) {
+            txtValor.setText("" + objSel.getValor());
         }
     }//GEN-LAST:event_cmbVeiculoItemStateChanged
 
@@ -326,8 +324,7 @@ public class CadastroVendaJD extends javax.swing.JDialog {
             }
         });
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -356,11 +353,11 @@ public class CadastroVendaJD extends javax.swing.JDialog {
     public void setVenda(Venda venda) {
         this.venda = venda;
         txtDataVenda.setText(venda.getDataVenda().format(formatter));
-        txtValor.setText(""+venda.getValorVenda());
+        txtValor.setText("" + venda.getValorVenda());
         cmbCliente.setSelectedItem(venda.getCliente());
         cmbVeiculo.setSelectedItem(venda.getVeiculo());
         cmbVendedor.setSelectedItem(venda.getVendedor());
-        
+
         cmbFormaContrato.setSelectedItem(venda.getFormaContrato());
         cmbFormaPgto.setSelectedItem(venda.getFormaPgto());
     }
